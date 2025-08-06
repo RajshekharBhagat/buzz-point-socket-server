@@ -6,6 +6,12 @@ export function registerSocketHandler(io:Server, socket: Socket) {
         const roomSize = io.sockets.adapter.rooms.get(hiveName)?.size || 0;
         io.to(hiveName).emit(`hiveUserCount:${hiveName}`, roomSize);
       });
+
+    socket.on("leave-hive", (hiveName: string) => {
+      socket.leave(hiveName);
+      const count = io.sockets.adapter.rooms.get(hiveName)?.size || 0;
+      io.to(hiveName).emit(`hiveUserCount:${hiveName}`, count);
+    })
     
       socket.on("sendMessage", ({ hiveName, message }) => {
         io.to(hiveName).emit("newMessage", {

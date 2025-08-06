@@ -8,7 +8,7 @@ const httpServer = createServer(app);
 
 const io = new Server(httpServer, {
   cors: {
-    origin: "*",
+    origin: ['https://buzz-point-socket-server.onrender.com','http://localhost:3000'],
   },
 });
 
