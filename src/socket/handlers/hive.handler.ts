@@ -6,7 +6,7 @@ export default function hiveSocketHandler(io: Server, socket: Socket) {
     socket.on("join-hive", async (hiveId: string) => {
       const userId = socket.data.userId;
 
-      const isSubscribed = await checkSubscription(userId, hiveId);
+      const isSubscribed = await checkSubscription(userId,hiveId);
     console.log(`Checking subscription for ${userId} in ${hiveId}: ${isSubscribed}`);
 
     if (!isSubscribed) {
