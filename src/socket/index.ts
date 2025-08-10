@@ -2,6 +2,7 @@ import { Server as SocketIOServer } from "socket.io";
 import type { Server } from "http";
 import hiveSocketHandler from "./handlers/hive.handler.js";
 import { socketAuthMiddleware } from "./middlewares/auth.middleware.js";
+import chatroomHandler from "./handlers/chatroom.handler.js";
 
 
 
@@ -20,6 +21,7 @@ export function setupSocket(server: Server) {
     console.log("User connected:", socket.id);
   
     hiveSocketHandler(io, socket);
+    chatroomHandler(io,socket);
   
     socket.on("disconnect", () => {
       console.log(`User disconnected: ${socket.id}`);
