@@ -1,22 +1,24 @@
 import express from "express";
-import { createServer } from "http";
-import { Server } from "socket.io";
-import { registerSocketHandler } from "./socket.js";
+import http from "http";
+import dotenv from "dotenv";
+import { setupSocket } from "./socket/index.js";
+import dbConnect from "./socket/utils/connectDB.js";
+
+dotenv.config();
 
 const app = express();
-const httpServer = createServer(app);
+const server = http.createServer(app);
 
-const io = new Server(httpServer, {
-  cors: {
-    origin: ['https://buzz-point-socket-server.onrender.com','http://localhost:3000'],
-  },
+
+await dbConnect();
+
+setupSocket(server);
+
+const PORT = process.env.PORT || 4000;
+server.listen(PORT, () => {
+  console.log(`Socket.IO server running on port ${PORT}`);
 });
 
-io.on("connection", (socket) => {
-  console.log("A user connected:", socket.id);
-  registerSocketHandler(io, socket);
-})
 
-httpServer.listen(4000, () => {
-  console.log("Socket server running at http://localhost:4000");
-});
+
+
